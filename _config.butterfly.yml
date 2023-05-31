@@ -87,7 +87,16 @@ cover:
   position: both
   # When cover is not set, the default cover is displayed (當沒有設置cover時，默認的封面顯示)
   default_cover:
-    - https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg
+    - /images/bg/640.jpg
+    - /images/bg/641.jpg
+    - /images/bg/642.jpg
+    - /images/bg/643.jpg
+    - /images/bg/644.jpg
+    - /images/bg/645.jpg
+    - /images/bg/646.jpg
+    - /images/bg/647.jpg
+    - /images/bg/648.jpg
+    - /images/bg/649.jpg
 
 # Replace Broken Images (替換無法顯示的圖片)
 error_img:
@@ -208,7 +217,7 @@ footer:
   owner:
     enable: true
     since: 2023
-  custom_text:
+  custom_text: 本博客由Lemonxu使用Hexo搭建，部分素材来自网络，如有侵权请联系删除
   copyright: false # Copyright of theme and framework
 
 # aside (側邊欄)
@@ -231,7 +240,7 @@ aside:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/Lemonxu
   card_announcement:
     enable: true
     content: This is my Blog
