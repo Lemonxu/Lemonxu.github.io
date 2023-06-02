@@ -27,6 +27,7 @@ categories: [前端响应式, HTML, CSS]
 RWD强调一套页面进行多端兼容展示（桌机、平板、手机都是用同一个 HTML 代码和同一个 CSS 文档，能依照不同屏幕宽度的条件，来改变排版），而AWD给出多套页面，对于不同device进行了分类处理（在不同的装置开启网页时，AWD 会先判定装置屏幕尺寸是哪一种，来读取不同的 CSS 文档，呈现网页设计排版）；
 RWD使用流动网格、CSS、以及灵活的基础可能需要更多的代码和实施策略（「媒体设备查询 @media」是 CSS 重要的能力之一，透过它可分辨开启网页的浏览器宽度大小，实时读取不同的样式呈现，就能达成 RWD 响应式效果），而AWD一般是server side detection，一次性渲染既定布局和样式。
 
+
 # 二、响应式设计实现方案
 
 主要从响应式布局（媒体查询、伸缩布局）、相对单位、响应式文字、响应式图片几个方面来进行响应式设计实现。
@@ -34,6 +35,50 @@ RWD使用流动网格、CSS、以及灵活的基础可能需要更多的代码�
 ## 1、媒体查询
 CSS3媒体查询可以让我们针对不同的媒体类型定义不同的样式，当重置浏览器窗口大小的过程中，页面也会根据浏览器的宽度和高度重新渲染页面。
 
-在进行媒体查询实现前，需要考虑
+在进行媒体查询实现前，需要考虑如何合理地选定分割点，可以根据你的设计需求和目标设备来定，也有一些常用的分割点，例如：480px、600px、768px、900px、1200px等。
 
+具体语法如下所示：
+
+**移动优先**
+``` bash
+ <style>
+    body {
+        height: 100vh;
+        width: 100vw;
+        background: red;
+    }
+
+    @media screen and (min-width: 480px) {
+        body {
+            background: yellow;
+        }
+    }
+    @media screen and (min-width: 600px) {
+        body {
+            background: green;
+        }
+    }
+    @media screen and (min-width: 780px) {
+        body {
+            background: blue;
+        }
+    }
+    @media screen and (min-width: 900px) {
+        body {
+            background: purple;
+        }
+    }
+    @media screen and (min-width: 1200px) {
+        body {
+            background: palevioletred;
+        }
+    }
+</style>
+
+```
+
+**PC优先**
+``` bash
+
+```
 
