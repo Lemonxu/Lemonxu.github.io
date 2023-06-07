@@ -13,3 +13,13 @@
       link: https://mirror.macapp.tech/
       avatar: https://macapp-cdn.oss-cn-hangzhou.aliyuncs.com/macapp_logo.png?x-oss-process=style/MacApp
       descr: Mac软件分享平台
+
+- class_name: 在线小工具
+    - name: css box-shadow
+      link: https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow
+      avatar: 
+      descr: 方便显示shadow
+    - name: 临时邮箱
+      link: http://24mail.chacuo.net/
+      avatar: 
+      descr: 
