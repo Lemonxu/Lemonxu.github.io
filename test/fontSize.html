@@ -6,12 +6,8 @@
     <meta http-equiv="Cache-Control" content="no-transform ">
 
     <style>
-        html {
-            /* font-size: 62.5%; */
-            /* 1rem = 10px */
-
+        /* html {
             font-size: 625%;
-            /* 1rem = 100px */
         }
 
         body {
@@ -37,14 +33,44 @@
             height: 100px;
             background: yellow;
         }
+
+        .father {
+            font-size: 20px;
+        }
+
+        .father .son {}
+
+        .father .son .little-son {
+            font-size: 1.2em;
+        } */
+        .image{
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
     </style>
 </head>
 
 <body>
-    <div class="test">测试</div>
+    <!-- <div class="test">测试</div>
     <div class="test1">测试</div>
     <div class="block">测试</div>
     <div class="block1">测试</div>
+
+    <div class="father">
+        父元素
+        <div class="son">
+            子元素
+            <div class="little-son">
+                孙元素
+            </div>
+        </div>
+    </div> -->
+
+    <div>
+        <img class="image" src="../source/images/bg/640.jpg" alt="">
+    </div>
 </body>
 
 </html>
