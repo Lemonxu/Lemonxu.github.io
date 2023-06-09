@@ -1,4 +1,5 @@
 ---
+
 title: 前端响应式网站设计
 date: 2023-05-31 09:07:50
 tags: 前端响应式
@@ -314,9 +315,72 @@ em是相对长度单位，但它取决于父字体大小，也是离它最近的
 
 如上图所示，无论容器根据媒体查询扩张还是缩小，图片都能自适应。当然纵使容器再宽大，图片尺寸也不会超出自己的原生尺寸，等比例缩放，可以解决响应式中的大部分图片适应性问题。
 
-但是如果屏幕过小的情况下，图片中的字就会出现看不清的情况，如上面的图片，右边两张多少还是看的清楚里面的文字的，但是第一张的小屏幕上，已经不太能看得清楚里面具体写了什么，因此需要根据小屏幕更换更加突出重点的图片。
+但是如果屏幕过小的情况下，图片中的字就会出现看不清的情况，如上面的图片，右边两张多少还是看的清楚里面的文字的，但是第一张的小屏幕上，已经不太能看得清楚里面具体写了什么，因此需要根据小屏幕更换更加突出重点的图片。也就是根据不同的视口大小、屏幕分辨率等情况下提供不同的图片给用户，如下图所示：
 
 ![左边是手机显示的图片，右边是平板/PC显示的图片](/images/post/responsive-html/big-small.png)
+
+
+
+### srcset语法
+
+1. 根据像素比选择相应的图片
+
+```html
+<img class="image" src="../source/images/bg/640.jpg" srcset="../source/images/bg/641.jpg 2x, ../source/images/bg/642.jpg 1x " alt="">
+```
+
+**小提示**：上面代码中，2x，1x是像素比，也就是设备像素比(devicePixelRatio，简称dpr)，在js中可以通过window.devicePixelRadio来获取，在css中可以通过-webkit-min-device-pixel-ratio进行检测获取。
+
+```css
+@media only screen and (-webkit-min-device-pixel-ratio: 2), 
+       only screen and (min-device-pixel-ratio: 2) {
+       /* CSS styles for devices with dpr of 2 */
+}
+```
+
+2. 根据视口大小选择相应的图片
+
+```html
+<img class="image" src="big.jpg" srcset="big.jpg 1024w, middle.jpg 640w, small.jpg 320w">
+```
+
+上面代码是优先PC，默认展示big.jpg，在屏幕大于640px的时候，展示big.jpg；屏幕处于640px~320px的时候，显示middle.jpg；屏幕小于320px的啥时候显示small.jpg。具体的优先展示参考前面的媒体查询的规则。
+
+3. 搭配sizes进行使用
+
+```html
+<img class="image" src="big.jpg" srcset="big.jpg 1024w, middle.jpg 640w, small.jpg 320w" sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, calc(100vw / 3)">
+```
+
+上面代码搭配了sizes，翻译具体的显示逻辑为：当视口宽度不超过640时，图片宽度为视口的100%；当视口宽度大于640但小于960时，图片宽度为视口宽度的50%；当视口宽度大于960时（默认情况），图片宽度为视口的1/3。浏览器会根据当前的情况，自主地从提供的图片中选择，给出一个最优的图片。
+
+### ```<picture>```和```<source>```元素
+
+在响应式图片当中，如果需要基于同一张图片裁剪出多种尺寸的版本。并且针对裁剪后每种尺寸的图片，又要考虑三种用例的情况，将不同尺寸的图片等比例缩放。就需要用到picture和source元素进行展示。
+
+```html
+<picture>
+    <source media="(max-width:640px)" srcset="small.jpg 320w" />
+    <source media="(max-width:960px)" srcset="middle.jpg 640w" />
+    <source srcset="big.jpg 1024w" />
+    <img src="default.jpg" alt="">
+</picture>
+```
+
+如上述代码，浏览器会根据当前的视口去获取相应的图片数据源，展示给用户。**小提示**：必须加上img标签哦~~否则不会展示图片。原因是```<source>```只为```<picture>```提供数据源，但是并没有展示的能力，只有选择了恰当的来自```<source>```的素材并把它加载至```<image>```上，图片才能显现；另外，当浏览器不支持```<picture>```的时候，其中的image仍然可以被识别，确保时钟有图片显示在页面上。
+
+```html
+<picture>
+    <source media="(max-width:640px)" srcset="small.jpg 2x, small-1.jpg 1x " />
+    <source media="(max-width:960px)" srcset="middle.jpg 2x, middle-1.jpg 1x" />
+    <source srcset="big.jpg 2x, big-1.jpg 1x" />
+    <img class="image" src="default.jpg" alt="">
+</picture>
+```
+
+上述代码获取图片数据源的逻辑为：当视口宽度不超过640时，dpr为2的时候选择small.jpg，dpr为1的时候选择small-1.jpg；当视口宽度大于640但小于960时，，dpr为2的时候选择middle.jpg，dpr为1的时候选择middle-1.jpg；当视口宽度大于960时，dpr为2的时候选择big.jpg，dpr为1的时候选择big-1.jpg。
+
+实现多种屏幕视口的情况下，为不同屏幕像素的设备选择更加合适的图片。
 
 
 

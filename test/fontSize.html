@@ -43,11 +43,12 @@
         .father .son .little-son {
             font-size: 1.2em;
         } */
-        .image{
+        .image {
             max-width: 100%;
+            /* max-width: 100%;
             width: 100%;
             height: auto;
-            object-fit: contain;
+            object-fit: contain; */
         }
     </style>
 </head>
@@ -69,7 +70,15 @@
     </div> -->
 
     <div>
-        <img class="image" src="../source/images/bg/640.jpg" alt="">
+        <!-- <img class="image" src="../source/images/bg/640.jpg" srcset="../source/images/bg/642.jpg 1024w, ../source/images/bg/643.jpg 640w, ../source/images/bg/6411.jpg 320w"
+        sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, calc(100vw / 3)"> -->
+
+        <picture>
+            <source media="(max-width:640px)" srcset="../source/images/bg/640.jpg 2x, ../source/images/bg/644.jpg 1x " />
+            <source media="(max-width:960px)" srcset="../source/images/bg/641.jpg 2x, ../source/images/bg/645.jpg 1x" />
+            <source srcset="../source/images/bg/642.jpg 2x, ../source/images/bg/646.jpg 1x" />
+            <img class="image" src="../source/images/bg/643.jpg" alt="">
+        </picture>
     </div>
 </body>
 
