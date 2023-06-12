@@ -608,6 +608,8 @@ site_verification:
   #   content: xxxxxx
   - name: baidu-site-verification
     content: codeva-aqnyzLi7SQ
+  - name: msvalidate.01
+    content: 2A101DE4CB69400C01A80B1A89A62400
 
 # Beautify/Effect (美化/效果)
 # --------------------------------------
