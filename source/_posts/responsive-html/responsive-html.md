@@ -5,6 +5,9 @@ date: 2023-05-31 09:07:50
 tags: 前端响应式
 top_img: 
 categories: [前端响应式, HTML, CSS]
+keywords: 前端响应式, 设计, HTML, CSS
+description: 前端响应式网站设计，适应不同屏幕像素、视口大小变化。
+
 ---
 
 # 为什么需要设计响应式设计

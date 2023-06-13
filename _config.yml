@@ -137,7 +137,7 @@ hexo_submit_urls_to_search_engine:
   # 在必应站长平台中注册的域名
   bing_host: https://lemonxu.eu.org/
   # 必应自动推送 API 的 token（获取方式见插件文档：https://cjh0613.com/20200603HexoSubmitUrlsToSearchEngine.html）
-  bing_token: xxxxx
+  bing_token: 19f06d4578a9451e8d55774e52864b0e
   # 在谷歌站长平台中注册的域名
   google_host: https://lemonxu.eu.org/
   # 存放 google key 的 json 文件，放于网站根目录
