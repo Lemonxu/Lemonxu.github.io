@@ -4,12 +4,12 @@
 
 # Site
 title: Lemonxu's Blog
-subtitle: ''
-description: ''
-keywords:
+subtitle: ""
+description: "一个以前端开发为主的博客，一个专注前端的开发人员"
+keywords: 前端开发,前端,技术,html,css,javascript, 面试
 author: Lemonxu
 language: zh-CN
-timezone: ''
+timezone: ""
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
@@ -37,35 +37,35 @@ titlecase: false # Transform title into titlecase
 external_link:
   enable: true # Open external links in new tab
   field: site # Apply to the whole site
-  exclude: ''
+  exclude: ""
 filename_case: 0
 render_drafts: false
 post_asset_folder: true
 marked:
   prependRoot: true
   postAsset: true
-  
+
 relative_link: false
 future: true
 highlight:
   enable: true
   line_number: true
   auto_detect: false
-  tab_replace: ''
+  tab_replace: ""
   wrap: true
   hljs: false
 prismjs:
   enable: false
   preprocess: true
   line_number: true
-  tab_replace: ''
+  tab_replace: ""
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
-  path: ''
+  path: ""
   per_page: 10
   order_by: -date
 
@@ -85,7 +85,7 @@ meta_generator: true
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## updated_option supports 'mtime', 'date', 'empty'
-updated_option: 'mtime'
+updated_option: "mtime"
 
 # Pagination
 ## Set per_page to 0 to disable pagination
@@ -106,9 +106,9 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-- type: cjh_google_url_submitter
-- type: cjh_bing_url_submitter
-- type: cjh_baidu_url_submitter
+  - type: cjh_google_url_submitter
+  - type: cjh_bing_url_submitter
+  - type: cjh_baidu_url_submitter
 
 hexo_submit_urls_to_search_engine:
   # 提交最新的 n 个链接
@@ -142,3 +142,10 @@ hexo_submit_urls_to_search_engine:
   google_host: https://lemonxu.eu.org/
   # 存放 google key 的 json 文件，放于网站根目录
   google_key_file: google_key.json
+
+nofollow:
+  enable: true
+  field: site
+  exclude:
+    # - 'exclude1.com'
+    # - 'exclude2.com'
