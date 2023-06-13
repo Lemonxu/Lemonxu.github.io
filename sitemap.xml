@@ -56,7 +56,7 @@
 
   
   <url>
-    <loc>https://lemonxu.eu.org/tags/HTML/</loc>
+    <loc>https://lemonxu.eu.org/tags/HTML-%E5%9F%BA%E7%A1%80/</loc>
     <lastmod>2023-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -72,14 +72,21 @@
 
   
   <url>
-    <loc>https://lemonxu.eu.org/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/</loc>
+    <loc>https://lemonxu.eu.org/categories/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2023-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://lemonxu.eu.org/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/HTML/</loc>
+    <loc>https://lemonxu.eu.org/categories/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2023-06-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://lemonxu.eu.org/categories/%E5%89%8D%E7%AB%AF/%E5%9F%BA%E7%A1%80/HTML/</loc>
     <lastmod>2023-06-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
