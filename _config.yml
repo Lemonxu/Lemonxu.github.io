@@ -106,6 +106,10 @@ theme: butterfly
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
+  - type: git
+    repo: https://gitee.com/LemonTree_7/blog.git
+    branch: master
+
   - type: cjh_google_url_submitter
   - type: cjh_bing_url_submitter
   - type: cjh_baidu_url_submitter
