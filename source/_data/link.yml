@@ -1,0 +1,27 @@
+- class_name: 友情链接
+  class_desc: 那些人，那些事
+  link_list:
+    - name: Hygge
+      link: https://hygge.eu.org/
+      avatar: /images/hygge3.png
+      descr: 一个热爱新技术的后端开发~
+
+- class_name: 网站
+  class_desc: 值得推荐的网站
+  link_list:
+    - name: MacApp分享频道
+      link: https://mirror.macapp.tech/
+      avatar: https://macapp-cdn.oss-cn-hangzhou.aliyuncs.com/macapp_logo.png?x-oss-process=style/MacApp
+      descr: Mac软件分享平台
+
+- class_name: 在线小工具
+  class_desc: 
+  link_list:
+    - name: css box-shadow
+      link: https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow
+      avatar: 
+      descr: 方便显示shadow
+    - name: 临时邮箱
+      link: http://24mail.chacuo.net/
+      avatar: 
+      descr: 在线生成临时邮箱接收邮箱信息
