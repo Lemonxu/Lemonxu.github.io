@@ -1,32 +1,62 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<style>
-			/* 具有title属性的元素 */
-			[title]{
-				font-size: 18px;
-				color: red;
-			}
-			/* 以http开头的元素 */
-			[href^="http"]{
-			  color: #008B8B;
-			}
-			/* 以...结束 */
-			[href$="cn"]{
-			  color: #483D8B;
-			}
-			/*href中包含有i*/
-			[href*='i']{
-			  color: #808080;
-			}
-		</style>
-	</head>
-	<body>
-		<button title="普通按钮">普通按钮</button>
-		<a href="http://www.baidu.com">百度链接</a>
-		<a href="www.sina.cn">新浪博客</a>
-		<a href="http://www.yunhe.cn">云和数据</a>
-	</body>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style>
+		/* 具有title属性的元素 */
+		[title] {
+			font-size: 18px;
+			color: red;
+		}
+
+		/* 以http开头的元素 */
+		[href^="http"] {
+			color: #008B8B;
+		}
+
+		/* 以...结束 */
+		[href$="cn"] {
+			color: #483D8B;
+		}
+
+		/*href中包含有i*/
+		[href*='i'] {
+			color: #808080;
+		}
+	</style>
+
+	<style>
+		div span,
+		p span {
+			color: green;
+		}
+
+		p span,
+		h4 span {
+			color: yellow;
+		}
+	</style>
+</head>
+
+<body>
+	<button title="普通按钮">普通按钮</button>
+	<a href="http://www.baidu.com">百度链接</a>
+	<a href="www.sina.cn">新浪博客</a>
+	<a href="http://www.yunhe.cn">云和数据</a>
+
+	<div>
+		div中的不带标签的内容
+		<span>组合选择器，注意很常用</span>
+	</div>
+	<p>
+		<span>p标签中的span标签</span>
+	</p>
+
+	<h4>
+		<span>h4标签中的span标签</span>
+	</h4>
+</body>
+
 </html>
