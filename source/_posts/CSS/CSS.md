@@ -49,7 +49,7 @@ CSS的定义由三部分组成，包括选择器（selector）、属性（proper
 [href^="http"]{ /*以http开头的元素*/
     color: red;
 }
-[href$="cn"]{
+[href$="cn"]{ /*以...为结束*/
     color: blue;
 }
 [href*="i"]{
