@@ -36,24 +36,140 @@
 		p span,
 		h4 span {
 			color: yellow;
+			animation: 1s shink ease-in forwards infinite;
 		}
-		h4:first-letter{
+
+		h4:first-letter {
 			font-size: 20px;
 			color: rebeccapurple;
 		}
-		h4:first-line{
+
+		h4:first-line {
 			background: pink;
 		}
-		img::before{
+
+		img::before {
 			content: "加载中...";
-			color:#483D8B;
+			color: #483D8B;
 			font-size: 14px;
 			background: pink;
 		}
-		strong::before{
+
+		strong::before {
 			content: "red";
 			font-weight: 600;
 			font-size: 19px;
+		}
+
+		@media print {
+
+			img::before {
+				font-size: 50px;
+			}
+
+			@page {
+				margin-top: 300px;
+				size: A3;
+			}
+		}
+
+		@keyframes shink {
+			from {
+				color: red
+			}
+
+			50% {
+				color: blue
+			}
+
+			to {
+				color: green
+			}
+		}
+
+		@document url("https://www.example.com/") {
+			h1 {
+				color: red;
+			}
+		}
+
+		.grid-block {}
+
+		@supports (display: grid) {
+			div {
+				display: grid;
+				background: rgb(255, 210, 210);
+			}
+		}
+
+		div:lang(en) {
+			font-size: 25px;
+			color: #483D8B;
+			font-weight: bold;
+		}
+
+		div:has(span) {
+			background: #008B8B;
+			margin-top: 40px;
+		}
+
+		:is(div p span) {
+			background: violet;
+		}
+
+		:is(div p span):hover {
+			background: aqua;
+		}
+
+		div p span::selection {
+			background: yellowgreen;
+		}
+
+		div:target {
+			color: #df44d2;
+			background: #f1fde7;
+		}
+
+		input:required {
+			background-color: gold;
+		}
+
+		input:required:invalid {
+			border-color: #c00000;
+		}
+
+		input:invalid {
+			background-color: yellow;
+		}
+
+		input[type="checkbox"]:checked {
+			box-shadow: 0 0 0 3px hotpink;
+		}
+
+		:root {
+			--main-color: hotpink;
+			--pane-padding: 5px 42px;
+		}
+
+		div {
+			background: var(--main-color);
+		}
+
+		a::after {
+			content: ' (' attr(href) ')';
+		}
+
+		.absolute-margin{
+			width: 100px;
+			height: 100px;
+			background: #08b7d6;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			margin: auto;
+			hyphens: auto;
 		}
 	</style>
 </head>
@@ -78,6 +194,48 @@
 
 	<img src="" alt="">
 	<strong type="text"></strong>
+
+	<a href="https://www.example.com/">9999</a>
+
+	<div class="grid-block" lang="en">
+		8888
+	</div>
+
+	<div dir="rtl">
+		<span>test1</span>
+		<div dir="ltr">
+			test2
+			<div dir="auto">עִבְרִית</div>
+		</div>
+	</div>
+
+	<div>
+		<p>
+			<span>is标签</span>
+		<p>
+			<span>深层</span>
+		</p>
+		</p>
+	</div>
+
+	<li><a href="#p1">跳转到第一个段落！</a></li>
+
+	<div id="p1">
+		maodian?
+	</div>
+
+	<input type="email" required />
+
+	<input type="checkbox">898989</input>
+
+	<div class="absolute-margin">
+		居中居中居中居中居中居中
+		居中居中居中居中居中居中居中居中居中居
+		中居中居中居中居中居中居中居中居中居中
+		居中居中居中居中居中居中居中居中居中居中居中居中
+		居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中
+		居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中居中
+	</div>
 
 </body>
 
