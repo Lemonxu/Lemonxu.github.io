@@ -602,6 +602,18 @@ p{
 
 
 
+# 常见问题
+
+## 对css的sprites的理解
+
+css sprites(精灵图)，将一个页面涉及到的所有图片都包含到一张大图中去，然后利用css的`background-image`，`background-repeat`、`background-position`属性的组合进行背景定位；
+
+优点：利用css sprites能很好地减少网页的http请求，大大提高性能；减少图片字节，把3张图片合成一张的字节总是小于3张图片的字节总和；
+
+缺点：图片合并时，要把多张图片有序的、合理的合成一张图片，还要留好足够的空间，防止板块内出现不必要的背景；在宽屏及高分辨率下的自适应页面，如果背景不够宽，很容易出现背景断裂。
+
+
+
 ***附录：***
 
 [命名空间 | @namespace (Namespaces) - CSS 中文开发手册 - 开发者手册 - 腾讯云开发者社区-腾讯云 (tencent.com)](https://cloud.tencent.com/developer/section/1072304)
