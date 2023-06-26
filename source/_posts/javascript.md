@@ -35,11 +35,54 @@ JavaScript有3种引入方式：行内式、嵌入式和外链式；
 <script src="./test.js"></script>
 ```
 
-
-
 ## 基本语法
 
-## 面向对象/BOM/DOM
+JavaScript是一种脚本语言，脚本通常以文本保存，只有在被调用的时候进行解释或编译。
+
+JavaScript中必须严格区分大小写，例如Test和test是不同的；
+
+JavaScript语句中每一行代码都要以英文的分号`;`结尾，如果不写分号，浏览器会自动添加，但会消耗一些系统资源；
+
+JavaScript中会自动忽略多个空格和换行，所以可以使用空格和换行进行格式化；
+
+JavaScript是弱类型语言，声明变量时可以不需要指定变量的类型。
+
+
+
+## 面向对象/设计模式/BOM/DOM/
+
+### 面向对象
+
+面向对象和面向过程都是编程思想。面向对象其实是面向过程的一种封装，例如：我要吃面条（面向过程：用多少面粉、多少水、怎么和面、怎么切面条、烧开水、煮面、吃面；面向对象：找到一个面馆、叫一碗面、等着吃）。
+
+在ES6之前，JavaScript没有类的概念，但是可以使用函数来进行模拟，从而产生可复用的对象创建方式。
+
+**创建对象的方式**：工厂模式、构造函数模式、原型模式、组合使用构造函数模式和原型模式、动态原型模式、寄生构造函数模式。
+
+```javascript
+//工厂模式：就是使用一个函数来创建对象
+function createObject(name){
+    var o = new Object();
+    o.name = name;
+    return o;
+}
+var o1 = createObject("test1");
+var o2 = createObject("test2");
+console.log(o1,o2);
+
+//构造函数模式：js每个函数都可以作为构造函数，只要一个函数是通过new来调用的，那么就可以把它成为构造函数。
+function createObject(name){
+    this.name = name;
+}
+var o1 = new createObject("test11");
+var o2 = new createObject("test22");
+console.log(o1,o2);
+
+```
+
+
+
+
 
 ## 数据类型
 
@@ -59,8 +102,6 @@ JavaScript有3种引入方式：行内式、嵌入式和外链式；
 
 ## ES6新特性（数组常用方法区别）
 
-## 设计模式
-
 ## Ajax/网络协议
 
 ## 垃圾回收与内存泄漏
@@ -74,3 +115,6 @@ JavaScript有3种引入方式：行内式、嵌入式和外链式；
 ***附录：***
 
 [JavaScript代码的三种引入方式【操作演示】 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/617704546)
+
+[ JavaScript篇_w3cschool](https://www.w3cschool.cn/web_interview/web_interview-u8jo3pu4.html)
+
