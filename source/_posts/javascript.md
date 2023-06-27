@@ -78,6 +78,9 @@ var o1 = new createObject("test11");
 var o2 = new createObject("test22");
 console.log(o1,o2);
 
+//原型模式：因为每个函数都有一个prototype属性，这个属性是一个对象，
+
+
 ```
 
 
