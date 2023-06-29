@@ -211,6 +211,8 @@ DOM指的是文档对象模型，是指把文档当做一个对象，这个对�
 
 ## 数据类型
 
+#### 数据类型种类（8种）
+
 JavaScript的数据类型，共有8中数据类型：undefined、null、Boolean、Number、String、Object、Symbol、BigInt。
 
 其中Symbol和BigInt是ES6新增的数据类型：
@@ -221,11 +223,114 @@ JavaScript的数据类型，共有8中数据类型：undefined、null、Boolean�
 
 数据可以分为：原始数据类型和引用数据类型。
 
-栈（原始数据类型）：`undefined、null、Boolean、Number、String、Symbol、BigInt`；
+栈（stack）（原始数据类型）：`undefined、null、Boolean、Number、String、Symbol、BigInt`；
+
+原始数据类型直接存储在栈中的简单数据段，占据空间小、大小固定，属于被频繁使用的数据，所以放入栈中存储。在数据结构中，栈中的数据存储方式是先进后出。
+
+堆（heap）（引用数据类型）：`对象Object、数组Array、函数`；
+
+引用数据类型存储在堆中的对象，占据空间大，大小不固定。如果存储在栈中，将会影响程序运行的性能；引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体。在数据结构中，堆是一个优先队列，是按照优先级来进行排序的，优先级可以按照大小来规定。
+
+（操作系统内存被分为栈区和堆区：栈区内存由编译器自动分配释放，存放函数的参数值，局部变量的值等。其操作方式类似数据结构中的栈；堆区内存一般由开发者分配释放，若开发者不释放，程序结束时可能由垃圾回收机制回收。）
 
 
 
-堆（引用数据类型）：`对象Object、数组Array、函数`；
+#### 数据类型检测方法（4种）
+
+- **typeof**
+
+```javascript
+console.log(typeof 2); //number
+console.log(typeof true); //boolean
+console.log(typeof 'str'); //string
+console.log(typeof []); //object
+console.log(typeof function(){}); //function
+console.log(typeof {});  //object
+console.log(typeof undefined);  //undefined
+console.log(typeof null); //object
+```
+
+- **instanceof**
+
+可以正确判断对象类型，内部运行机制是判断在其原型链中是否能找到该类型的原型。
+
+`instanceof`只能正确判断引用数据类型，而不能判断基本数据类型。`instanceof`运算符可以用来测试一个对象在其原型链中是否存在一个构造函数的`prototype`属性。
+
+```javascript
+console.log(2 instanceof Number); //false
+console.log(true instanceof Boolean); //false
+console.log('str' instanceof String); //false
+
+console.log([] instanceof Array); //true
+console.log(function(){} instanceof Function); //true
+console.log({} instanceof Object);  //true
+```
+
+- **constructor**
+
+`constructor`有2个作用：一个是判断数据的类型，二是对象示例通过`constructor`对象访问它的构造函数。需要注意，如果创建一个对象来改变它的原型，`constructor`就不能用来判断数据类型了。
+
+```javascript
+console.log((2).constructor === Number); // true
+console.log((true).constructor === Boolean); //true
+console.log(('str').constructor === String); //true
+console.log(([]).constructor === Array); //true
+console.log((function() {}).constructor === Function); //true
+console.log(({}).constructor === Object);  //true
+
+function Fn(){};
+Fn.prototype = new Array();
+var f = new Fn();
+console.log(f.constructor===Fn);    // false
+console.log(f.constructor===Array); // true
+```
+
+- **Object.prototype.toString.call()**
+
+`Object.prototype.toString.call()`是通过Object对象原型方法toString来判断数据类型。
+
+`obj.toString()`的结果和`Object.prototype.toString.call(obj)`的结果不一样：toString是Object的原型方法，而Array、Function等类型作为Object的实例，都重写了toString方法。不同的对象类型调用toString方法时，根据原型链的知识，调用的是对应的重写之后的toString方法（function类型返回内容为函数体的字符串，Array类型返回元素组成的字符串...)，而不会去调用Object原型上的toString方法（返回对象的具体类型），所以采用obj.toString()不能得到其对象类型，只能将obj转换为字符串类型；因此，在想要得到对象具体的类型应调用Object原型上的toString方法。
+
+```javascript
+var a = Object.prototype.toString;
+
+console.log(a.call(2)); //[object Number]
+console.log(a.call(true)); //[object Boolean]
+console.log(a.call('str')); //[object String]
+console.log(a.call([])); //[object Array]
+console.log(a.call(function(){})); //[object Function]
+console.log(a.call({})); //[object Object]
+console.log(a.call(undefined)); //[object Undefined]
+console.log(a.call(null)); //[object Null]
+```
+
+#### 判断数组方式（5种）
+
+```javascript
+//通过Object.prototype.toString.call()判断
+Object.prototype.toString.call(obj) == "[object Array]"; //true或者false
+Object.prototype.toString.call(obj).slice(8, -1) == "Array"; //true或者false，其中slice(8, -1)截取其中的Array字符串
+
+//通过instanceof做判断
+obj instanceof Array //true或者false
+
+//通过原型链做判断
+obj._proto_ === Array.prototype;
+obj.constructor === Array
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
