@@ -1,0 +1,61 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    <script>
+        const arr = [1, 2, 3];
+        console.log(Array);
+        console.log(Array.isArray(arr));
+        console.log(arr.__proto__ === Array.prototype);
+        console.log(arr.constructor === Array);
+        console.log(arr instanceof Array)
+
+
+
+        // function test() {
+        //     let a = 1;
+        //     while (true) {
+        //         console.log(a);
+        //         if (a > 10) return false;
+        //         a++;
+        //     }
+        // }
+        // test();
+
+        console.log(0.1 + 0.2, (0.1 + 0.2).toFixed(2))
+
+        function test111() {
+            console.log(arguments)
+        }
+        var o1 = new test111(1, 2, 3, 4);
+
+        function objectFactory() {
+            let newObject = null;
+            let constructor = Array.prototype.shift.call(arguments);
+            let result = null;
+            // 判断参数是否是一个函数
+            if (typeof constructor !== "function") {
+                console.error("type error");
+                return;
+            }
+            // 新建一个空对象，对象的原型为构造函数的 prototype 对象
+            newObject = Object.create(constructor.prototype);
+            // 将 this 指向新建对象，并执行函数
+            result = constructor.apply(newObject, arguments);
+            // 判断返回对象
+            let flag = result && (typeof result === "object" || typeof result === "function");
+            // 判断返回结果
+            return flag ? result : newObject;
+        }
+        // 使用方法
+        var o2 = objectFactory(test111, 5,7,8,9);
+        console.log(o1.constructor == o2.contructor);
+
+    </script>
+</body>
+
+</html>

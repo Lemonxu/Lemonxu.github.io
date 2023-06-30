@@ -233,6 +233,14 @@ JavaScript的数据类型，共有8中数据类型：undefined、null、Boolean�
 
 （操作系统内存被分为栈区和堆区：栈区内存由编译器自动分配释放，存放函数的参数值，局部变量的值等。其操作方式类似数据结构中的栈；堆区内存一般由开发者分配释放，若开发者不释放，程序结束时可能由垃圾回收机制回收。）
 
+**null和undefined的区别**：两者都属于基本数据类型，分别只有一个值。
+
+undefined代表未定义，null代表的是空对象。
+
+typeof null会返回Object。undefined的值是（-2）30（一个超出整数范围的数字）；null的机器码是NULL指针（null指针的值全是0，也就是null的类型标签为000，和Object的类型标签一样，所以会被判定为Object）。
+
+Boolean(布尔类型的假值)：undefined、null、+0、-0、false、""、NaN。
+
 
 
 #### 数据类型检测方法（4种）
@@ -248,6 +256,7 @@ console.log(typeof function(){}); //function
 console.log(typeof {});  //object
 console.log(typeof undefined);  //undefined
 console.log(typeof null); //object
+console.log(typeof NaN); //number
 ```
 
 - **instanceof**
@@ -264,6 +273,28 @@ console.log('str' instanceof String); //false
 console.log([] instanceof Array); //true
 console.log(function(){} instanceof Function); //true
 console.log({} instanceof Object);  //true
+```
+
+实现原理：instanceof用于判断构造函数的prototype属性是否出现在对象的原型链中的任何位置。
+
+```javascript
+function myInstanceof(left, right) { //left:对象，right构造函数
+    //获取对象的原型
+    let proto = Object.getPrototypeOf(left);
+    //获取构造函数的prototype对象
+    let prototype = right.prototype;
+    
+    //判断构造函数的prototype对象是否在对象的原型链上
+    while(true){
+        if(!proto) return false;
+        if(proto === prototype) return true;
+        //如果没有找到，就继续从其原型上找，Object.getPrototypeOf方法用来获取指定对象的原型
+        proto = Object.getPrototypeOf(proto);        
+    }
+}
+
+//报错提示：Javascript错误提示--SyntaxError: Illegal return statement
+//表示js的return语句只能放在function中，否则就会报错。
 ```
 
 - **constructor**
@@ -312,33 +343,107 @@ Object.prototype.toString.call(obj) == "[object Array]"; //true或者false
 Object.prototype.toString.call(obj).slice(8, -1) == "Array"; //true或者false，其中slice(8, -1)截取其中的Array字符串
 
 //通过instanceof做判断
-obj instanceof Array //true或者false
+obj instanceof Array; //true或者false
 
 //通过原型链做判断
-obj._proto_ === Array.prototype;
-obj.constructor === Array
+obj.__proto__ === Array.prototype; //true或者false
+obj.constructor === Array; //true或者false
 
+//通过ES6的Array.isArray()做判断
+Array.isArray(obj); //true或者false
 
+//通过Array.prototype.isPrototypeOf
+Array.prototype.isPrototypeOf(obj); //true或者false
 
 ```
 
+## 基础（操作符new/隐式转换）
 
+### 隐式转换规则
 
+当隐式转换为number时，在ToPrimitive中优先查找obj的valueOf方法，如果为原始值，则返回，否则调用obj的toString方法，如果为原始值则返回，否则抛出TypeError异常。
 
+当隐式转换为string时，在ToPrimitive中优先查找toString方法，如果为原始值则返回，否则调用obj的valueOf方法，如果有原始值则返回，否则抛出TypeError异常。
 
+如果对象为Date，默认转化为string，其他情况下默认number。
 
+```javascript
+// + 操作符：如果有string，优先string类型，其他情况下两边会被转换number
+1+'23' //'123'
+1+false //1
+1+Symbol() //Uncaught TypeError: Cannot convert a Symbol value to a number
+'1'+false //1false
+false+true //1
 
+// -、*、/ 操作符：默认转化为number，NaN也是数字类型
+1*'23' //23
+1*false //0
+1 / 'aa' //NaN
+1/0 //Infinity
 
+// == 操作符：两遍都尽量转换成number
+3 == true //false, 3转化为number为3，true转化为number为1
+'0' == false //true, '0'转化为number为0，false转化为number为0
 
+// > 和 < 比较符：都是字符串，字母按照字母表顺序比较，其他转化为数字
+'a' < 'b' // true
+'a' < 'b' // true
+false > -1 // true
+var a = {};a > 2 // false 
 
+/*
+过程解释：
+a.valueOf() // {}, 上面提到过，ToPrimitive默认type为number，所以先valueOf，结果还是个对象，下一步
+a.toString() // "[object Object]"，现在是一个字符串了
+Number(a.toString()) // NaN，根据上面 < 和 > 操作符的规则，要转换成数字
+NaN > 2 //false，得出比较结果
+*/
+```
 
+### 操作符new
 
+new操作符的执行过程：
 
+1、创建一个新的空对象；
 
+2、设置原型，将对象的原型设置为函数的prototype对象；
 
-## 基础（操作符new/隐式转换/）
+3、让函数的this指向这个对象，执行构造函数的代码（为这个新对象添加属性）；
+
+4、判断函数的返回值类型，如果是值类型，返回创建对象；如果是引用类型，返回引用类型的对象。
+
+```javascript
+function objectFactory() {
+  let newObject = null;
+  let constructor = Array.prototype.shift.call(arguments);
+  let result = null;
+  // 判断参数是否是一个函数
+  if (typeof constructor !== "function") {
+    console.error("type error");
+    return;
+  }
+  // 新建一个空对象，对象的原型为构造函数的 prototype 对象
+  newObject = Object.create(constructor.prototype);
+  // 将 this 指向新建对象，并执行函数
+  result = constructor.apply(newObject, arguments);
+  // 判断返回对象
+  let flag = result && (typeof result === "object" || typeof result === "function");
+  // 判断返回结果
+  return flag ? result : newObject;
+}
+// 使用方法
+objectFactory(构造函数, 初始化参数);
+```
+
+### 内置对象
+
+js内置对象主要指的是在程序执行前存在全局作用域里的由js定义的一些全局值属性、函数和用来实例化其他对象的构造函数对象。
 
 ## 作用域/执行上下文/闭包作用域/执行上下文/闭包
+
+
+
+
 
 ## this/call/apply/bind
 
@@ -359,6 +464,20 @@ obj.constructor === Array
 
 
 # 常见问题
+
+## 0.1+0.2 !==  0.3如何让其相等
+
+精度丢失问题
+
+```javascript
+//使用Number.EPSILON
+function numberepsilon(arg1, arg2){
+    return Math.abs(arg1 - arg2) < Number.EPSILON;
+}
+console.log(numberepsilon(0.1+0.2, 0.3)) //true
+```
+
+
 
 
 
