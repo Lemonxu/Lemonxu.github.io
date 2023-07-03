@@ -52,8 +52,39 @@
             return flag ? result : newObject;
         }
         // 使用方法
-        var o2 = objectFactory(test111, 5,7,8,9);
+        var o2 = objectFactory(test111, 5, 7, 8, 9);
         console.log(o1.constructor == o2.contructor);
+
+        // for (var i = 1; i <= 5; i++) {
+        //     setTimeout(function timer() {
+        //         console.log(i)
+        //     }, i * 1000)
+
+        //     (function (j) {
+        //         setTimeout(function timer() {
+        //             console.log(j)
+        //         }, j * 1000)
+        //     })(i)
+        // }
+        for (var i = 1; i <= 5; i++) {
+            setTimeout(function timer(j) {
+                console.log(j)
+            }, i * 1000, i)
+        }
+
+        function* generatorForLoop(num) {
+            for (let i = 0; i < num; i += 1) {
+                yield console.log(i, "generator");
+            }
+        }
+
+        const genForLoop = generatorForLoop(5);
+
+        genForLoop.next(); // 首先 console.log —— 0
+        genForLoop.next(); // 1
+        genForLoop.next(); // 2
+        genForLoop.next(); // 3
+        genForLoop.next(); // 4
 
     </script>
 </body>

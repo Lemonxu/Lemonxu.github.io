@@ -461,25 +461,283 @@ js内置对象主要指的是在程序执行前存在全局作用域里的由js�
 
 反射：Proxy、Reflect等
 
-国际化（支持多语言）：Intl、
+国际化（支持多语言）：Intl、Intl.Collator等；
 
 WebAssembly：
 
 其他：例如 arguments
 
-## 作用域/执行上下文/闭包作用域/执行上下文/闭包
+## 作用域/执行上下文/闭包
+
+### 闭包
+
+指的是有权访问另一个函数作用域中的变量的函数。
+
+创建闭包的最常见的方式是在一个函数内创建另一个函数，创建的函数可以访问到当前函数的局部变量。
+
+闭包有两个常用的用途：一是使我们在函数外部能够访问到函数内部的变量；二是使已经运行结束的函数上下文中的变量对象继续留在内存中，因为闭包函数保留了这个变量对象的引用，所以这个变量对象不会被回收。
+
+```javascript
+//函数 A 内部有一个函数 B，函数 B 可以访问到函数 A 中的变量，那么函数 B 就是闭包
+function A() {
+  let a = 1
+  window.B = function () {
+      console.log(a)
+  }
+}
+A()
+B() // 1
+
+/*循环中使用闭包解决 var 定义函数的问题*/
+//立即执行函数(使用闭包的方式)
+for (var i = 1; i <= 5; i++) {
+    (function (j) {
+        setTimeout(function timer() {
+            console.log(j)
+        }, j * 1000)
+    })(i)
+}
+//使用 setTimeout 的第三个参数，这个参数会被当成 timer函数的参数传入
+for (var i = 1; i <= 5; i++) {
+    setTimeout(function timer(j) {
+        console.log(j)
+    }, i * 1000, i)
+}
+//使用 let 定义 i 了来解决问题了，这个也是最为推荐的方式
+
+```
+
+### 作用域/作用域链
+
+**全局作用域**：最外层函数和最外层函数外面定义的变量拥有全局作用域，所有未定义直接赋值的变量自动声明为全局作用域，所有window对象的属性拥有全局作用域，所有window对象的属性拥有全局作用域；
+
+**函数作用域**：函数作用域声明在函数内部的变零，一般只有固定的代码片段可以访问到，作用域是分层的，内层作用域可以访问外层作用域，反之不行。
+
+**块级作用域**：使用ES6中新增的let和const指令可以声明块级作用域，块级作用域可以在函数中创建也可以在一个代码块中的创建（由 `{ }`包裹的代码片段），使用ES6中新增的let和const指令可以声明块级作用域，块级作用域可以在函数中创建也可以在一个代码块中的创建（由 `{ }`包裹的代码片段），在循环中比较适合绑定块级作用域，这样就可以把声明的计数器变量限制在循环内部。
+
+**作用域链**：在当前作用域中查找所需变量，但是该作用域没有这个变量，那这个变量就是自由变量。如果在自己作用域找不到该变量就去父级作用域查找，依次向上级作用域查找，直到访问到window对象就被终止，这一层层的关系就是作用域链。
+
+作用域链的作用是**保证对执行环境有权访问的所有变量和函数的有序访问，通过作用域链，可以访问到外层环境的变量和函数。**作用域链的本质上是一个指向变量对象的指针列表。
+
+### 对执行上下文的理解
+
+**全局执行上下文**：任何不在函数内部的都是全局执行上下文，它首先会创建一个全局的window对象，并且设置this的值等于这个全局对象，一个程序中只有一个全局执行上下文；
+
+**函数执行上下文**：当一个函数被调用时，就会为该函数创建一个新的执行上下文，函数的上下文可以有任意多个；
+
+`eval`**函数执行上下文**：执行在eval函数中的代码会有属于他自己的执行上下文，不过eval函数不常使用。
 
 
 
+### this/call/apply/bind
+
+#### **对this对象的理解**
+
+this 是执行上下文中的一个属性，它指向最后一次调用这个方法的对象。
+
+在实际开发中，this 的指向可以通过四种调用模式来判断：**函数调用模式**（当一个函数不是一个对象的属性时，直接作为函数来调用时，this 指向全局对象）；**方法调用模式**（如果一个函数作为一个对象的方法来调用时，this 指向这个对象）；**构造器调用模式**（如果一个函数用 new 调用时，函数执行前会新创建一个对象，this 指向这个新创建的对象）；**apply 、 call 和 bind 调用模式**（这三个方法都可以显示的指定调用函数的 this 指向）
+
+call() 和 apply() 的区别：apply 接受两个参数，第一个参数指定了函数体内 this 对象的指向，第二个参数为一个带下标的集合，这个集合可以为数组，也可以为类数组，apply 方法把这个集合中的元素作为参数传递给被调用的函数；call 传入的参数数量不固定，跟 apply 相同的是，第一个参数也是代表函数体内的 this 指向，从第二个参数开始往后，每个参数被依次传入函数。
+
+#### **call 函数的实现步骤**
+
+```js
+1、判断调用对象是否为函数，即使是定义在函数的原型上的，但是可能出现使用 call 等方式调用的情况。
+2、判断传入上下文对象是否存在，如果不存在，则设置为 window 。
+3、处理传入的参数，截取第一个参数后的所有参数。
+4、将函数作为上下文对象的一个属性。
+5、使用上下文对象来调用这个方法，并保存返回结果。
+6、删除刚才新增的属性。
+7、返回结果。
+
+Function.prototype.myCall = function(context) {
+  // 判断调用对象
+  if (typeof this !== "function") {
+    console.error("type error");
+  }
+  // 获取参数
+  let args = [...arguments].slice(1),
+    result = null;
+  // 判断 context 是否传入，如果未传入则设置为 window
+  context = context || window;
+  // 将调用函数设为对象的方法
+  context.fn = this;
+  // 调用函数
+  result = context.fn(...args);
+  // 将属性删除
+  delete context.fn;
+  return result;
+};
+```
+
+#### **apply 函数的实现步骤**
+
+```js
+1、判断调用对象是否为函数，即使是定义在函数的原型上的，但是可能出现使用 call 等方式调用的情况。
+2、判断传入上下文对象是否存在，如果不存在，则设置为 window 。
+3、将函数作为上下文对象的一个属性。
+4、判断参数值是否传入
+5、使用上下文对象来调用这个方法，并保存返回结果。
+6、删除刚才新增的属性
+7、返回结果
+
+Function.prototype.myApply = function(context) {
+  // 判断调用对象是否为函数
+  if (typeof this !== "function") {
+    throw new TypeError("Error");
+  }
+  let result = null;
+  // 判断 context 是否存在，如果未传入则为 window
+  context = context || window;
+  // 将函数设为对象的方法
+  context.fn = this;
+  // 调用方法
+  if (arguments[1]) {
+    result = context.fn(...arguments[1]);
+  } else {
+    result = context.fn();
+  }
+  // 将属性删除
+  delete context.fn;
+  return result;
+};
+```
+
+#### **bind 函数的实现步骤**
+
+```js
+1、判断调用对象是否为函数，即使是定义在函数的原型上的，但是可能出现使用 call 等方式调用的情况。
+2、保存当前函数的引用，获取其余传入参数值。
+3、创建一个函数返回
+4、函数内部使用 apply 来绑定函数调用，需要判断函数作为构造函数的情况，这个时候需要传入当前函数的 this 给 apply 调用，其余情况都传入指定的上下文对象。
+
+Function.prototype.myBind = function(context) {
+  // 判断调用对象是否为函数
+  if(typeof this !== 'function'){
+    console.error('err')
+  }
+  let args = [...arguments].slice(1)
+  let fn = this
+  const func = function(){
+    return fn.apply(this instanceof fn ? this:context, args.concat([...arguments]))
+  }
+  func.prototype = Object.create(fn.prototype)
+  func.prototype.constructor = func
+  return func
+};
+```
 
 
-## this/call/apply/bind
 
 ## 原型/原型链/继承
 
+原型：当使用构造函数新建一个对象后，在这个对象的内部将包含一个指针，这个指针指向构造函数的 prototype 属性对应的值，在 ES5 中这个指针被称为对象的原型。
+
+原型链：当访问一个对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链的概念。（原型链的尽头一般来说都是 Object.prototype ）。
+
+继承指的是对象的继承，指的是子对象能够使用父级对象的事件。
+
+
+
 ## 事件循环
 
+1、JavaScript是单线程，非阻塞的。
+
+2、浏览器事件循环：执行栈和事件队列；宏任务（macrotask）和微任务（microtask）。
+
+宏任务：script(整体代码)、setTimeout()、setInterval()、postMessage、I/O、UI交互事件、MessageChannel、setImmediate(Node.js 环境)；
+
+微任务：new Promise().then(回调)、MutationObserver(html5 新特性)、Object.observe、process.nextTick(Node.js 环境)。
+
+在事件循环中，每进行一次循环操作称为 tick，每一次 tick 的任务处理模型是比较复杂的。
+
+运行顺序：执行一个宏任务（栈中没有就从事件队列中获取）；执行过程中如果遇到微任务，就将它添加到微任务的任务队列中；宏任务执行完毕后，立即执行当前微任务队列中的所有微任务（依次执行）；当前宏任务执行完毕，开始检查渲染，然后GUI线程接管渲染；渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）。
+
+执行宏任务，然后执行该宏任务产生的微任务，若微任务在执行过程中产生了新的微任务，则继续执行微任务，微任务执行完毕后，再回到宏任务中进行下一轮循环。
+
+3、node环境下的事件循环：表现出的状态与浏览器大致相同。不同的是 node 中有一套自己的模型。node 中事件循环的实现依赖 libuv 引擎。Node的事件循环存在几个阶段（如果是node10及其之前版本，microtask会在事件循环的各个阶段之间执行，也就是一个阶段执行完毕，就会去执行 microtask队列中的任务；node版本更新到11之后，Event Loop运行原理发生了变化，一旦执行一个阶段里的一个宏任务(setTimeout,setInterval和setImmediate)就立刻执行微任务队列，跟浏览器趋于一致。
+
+
+
 ## 异步编程/Promise/async和await/并发/并行
+
+### JavaScript中的异步机制
+
+可以分为以下几种：
+
+**回调函数** 的方式（使用回调函数的方式有一个缺点是，多个回调函数嵌套的时候会造成回调函数地狱，上下两层的回调函数间的代码耦合度太高，不利于代码的可维护）；
+
+**Promise** 的方式（使用 Promise 的方式可以将嵌套的回调函数作为链式调用。但是使用这种方法，有时会造成多个 then 的链式调用，可能会造成代码的语义不够明确）；
+
+**generator** 的方式（它可以在函数的执行过程中，将函数的执行权转移出去，在函数外部还可以将执行权转移回来）；
+
+```js
+ function* generatorForLoop(num) {
+    for (let i = 0; i < num; i += 1) {
+        yield console.log(i, "generator");
+    }
+}
+
+const genForLoop = generatorForLoop(5);
+
+genForLoop.next(); // 首先 console.log —— 0
+genForLoop.next(); // 1
+genForLoop.next(); // 2
+genForLoop.next(); // 3
+genForLoop.next(); // 4
+```
+
+**async 函数** 的方式(async 函数是 generator 和 promise 实现的一个自动执行的语法糖，它内部自带执行器，当函数内部执行到一个 await 语句的时候，如果语句返回一个 promise 对象，那么函数将会等待 promise 对象的状态变为 resolve 后再继续向下执行。因此可以将异步逻辑，转化为同步的顺序来书写，并且这个函数可以自动执行)。
+
+### setTimeout、Promise、Async/Await 的区别
+
+```js
+//setTimeout
+console.log('script start') //1. 打印 script start
+setTimeout(function(){
+    console.log('settimeout')   // 4. 打印 settimeout
+})  // 2. 调用 setTimeout 函数，并定义其完成后执行的回调函数
+console.log('script end')   //3. 打印 script start
+// 输出顺序：script start->script end->settimeout
+
+//Promise:Promise本身是同步的立即执行函数， 当在executor中执行resolve或者reject的时候, 此时是异步操作， 会先执行then/catch等，当主栈完成后，才会去调用resolve/reject中存放的方法执行，打印p的时候，是打印的返回结果，一个Promise实例。
+console.log('script start')
+let promise1 = new Promise(function (resolve) {
+    console.log('promise1')
+    resolve()
+    console.log('promise1 end')
+}).then(function () {
+    console.log('promise2')
+})
+setTimeout(function(){
+    console.log('settimeout')
+})
+console.log('script end')
+// 输出顺序: script start->promise1->promise1 end->script end->promise2->settimeout
+
+//async/await
+async function async1(){
+   console.log('async1 start');
+    await async2();
+    console.log('async1 end')
+}
+async function async2(){
+    console.log('async2')
+}
+console.log('script start');
+async1();
+console.log('script end')
+// 输出顺序：script start->async1 start->async2->script end->async1 end
+
+
+
+
+
+```
+
+
+
+
 
 ## Proxy
 
@@ -518,3 +776,5 @@ console.log(numberepsilon(0.1+0.2, 0.3)) //true
 [JS 常用的六种设计模式介绍 - 掘金 (juejin.cn)](https://juejin.cn/post/7061987842473345061#heading-2)
 
 [33. SIMD - 概述 - 《阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版》 - 书栈网 · BookStack](https://www.bookstack.cn/read/es6-3rd/spilt.1.docs-simd.md)
+
+[高频面试题：JavaScript事件循环机制解析 - 简书 (jianshu.com)](https://www.jianshu.com/p/23fad3814398)
