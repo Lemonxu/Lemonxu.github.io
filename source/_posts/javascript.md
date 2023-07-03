@@ -439,6 +439,34 @@ objectFactory(构造函数, 初始化参数);
 
 js内置对象主要指的是在程序执行前存在全局作用域里的由js定义的一些全局值属性、函数和用来实例化其他对象的构造函数对象。
 
+值属性（全局属性返回一个简单值）: undefined、null、Infinity、NaN字面量等；
+
+函数属性（不需要在调用时指定所属对象，执行结束后会将结果直接返回给调用者）：eval()、parseInt()、parseFloat()等；
+
+基本对象（是定义或调用其他对象的基础，一般包括对象、函数对象和错误对象）：Object、Function、Boolean、Symbol、Error等；
+
+数字和日期对象（数字、日期对象和执行数学计算的对象）：Number、Math、Date等；
+
+字符串（用来表示和字符串操作的对象）：String、RegExp等；
+
+可索引的集合对象（表示按照索引值类排序的数据集合，包括数组和类型数组，以及类数组结构的对象）：Array等；
+
+使用键的集合对象（集合在存储数据时会使用到键，支持按照插入顺序来迭代元素）：Map、Set、WeakMap、WeakSet等；
+
+矢量集合：SIMD等；
+
+结构化数据：JSON等；
+
+控制抽象对象：Promise、Generator等；
+
+反射：Proxy、Reflect等
+
+国际化（支持多语言）：Intl、
+
+WebAssembly：
+
+其他：例如 arguments
+
 ## 作用域/执行上下文/闭包作用域/执行上下文/闭包
 
 
@@ -488,3 +516,5 @@ console.log(numberepsilon(0.1+0.2, 0.3)) //true
 [ JavaScript篇_w3cschool](https://www.w3cschool.cn/web_interview/web_interview-u8jo3pu4.html)
 
 [JS 常用的六种设计模式介绍 - 掘金 (juejin.cn)](https://juejin.cn/post/7061987842473345061#heading-2)
+
+[33. SIMD - 概述 - 《阮一峰 ECMAScript 6 (ES6) 标准入门教程 第三版》 - 书栈网 · BookStack](https://www.bookstack.cn/read/es6-3rd/spilt.1.docs-simd.md)
