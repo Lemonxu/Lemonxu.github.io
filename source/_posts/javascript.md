@@ -729,9 +729,49 @@ async1();
 console.log('script end')
 // 输出顺序：script start->async1 start->async2->script end->async1 end
 
+```
 
+### 对Promise的理解
 
+Promise的实例有**三个状态**：Pending（进行中）、Resolved（已完成）、Rejected（已拒绝）。
 
+优点：对象的状态不受外界影响，一旦状态改变就不会再变，任何时候都可以得到这个结果。
+
+缺点：无法取消Promise，一旦新建它就会立即执行，无法中途取消。无法取消Promise，一旦新建它就会立即执行，无法中途取消。当处于pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+
+Promise有五个常用的方法：then()、catch()、all()、race()、finally。
+
+```js
+
+const promise1 = new Promise(function(resolve, reject) {
+    // resolve({ success: "成功" }, { success: "成功2号" })
+    reject({ error: "失败" });
+    //resolve和reject同时存在的时候，只有resolve有效果，也就是then有返回。
+});
+const promise2 = new Promise(function(resolve, reject) {
+    resolve({ success: "成功+++1" })
+    // reject({ error: "失败+++1" });
+});
+const promise3 = new Promise(function(resolve, reject) {
+    // resolve({ success: "成功~~~~~1" })
+    reject({ error: "失败~~~~~1" });
+});
+
+//then()
+promise1.then(function (value) {
+    console.log(value);
+}, function (error) { //这个和catch都有的时候执行这个函数
+    console.log(error)
+}).catch((error) => { //then没有第二个函数的时候执行catch（catch方法还有一个作用，就是在执行 resolve回调函数时，如果出现错误，抛出异常，不会停止运行，而是进入 catch方法中）
+    console.log(error, "第二次失败")
+});
+
+//all()
+Promise.all([promise1,promise2,promise3]).then(res=>{
+    console.log(res);  //全部resolve才会返回，否则全部在异常里面返回
+}).catch((error) => {
+    console.log(error); //只要有一个失败就在这里返回
+})
 
 ```
 

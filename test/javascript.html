@@ -86,6 +86,36 @@
         genForLoop.next(); // 3
         genForLoop.next(); // 4
 
+
+        const promise1 = new Promise(function (resolve, reject) {
+            resolve({ success: "成功" })
+            // reject({ error: "失败" });
+        });
+        const promise2 = new Promise(function (resolve, reject) {
+            resolve({ success: "成功+++1" })
+            // reject({ error: "失败+++1" });
+        });
+        const promise3 = new Promise(function (resolve, reject) {
+            // resolve({ success: "成功~~~~~1" })
+            reject({ error: "失败~~~~~1" });
+        });
+        Promise.all([promise1, promise2, promise3]).then(res => {
+            console.log(res);
+            //结果为：[1,2,3] 
+        }, function (error) { //这个和catch都有的时候执行这个函数
+            console.log(error, "function")
+        }).catch((error) => {
+            console.log(error)
+        })
+        // promise1.then(function (value) {
+        //     console.log(value);
+        // }, function (error) {
+        //     console.log(error)
+        // }).catch((error) => {
+        //     console.log(error, "第二次失败")
+        // });
+
+
     </script>
 </body>
 
