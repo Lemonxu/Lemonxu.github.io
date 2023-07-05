@@ -100,20 +100,84 @@
             reject({ error: "失败~~~~~1" });
         });
         Promise.all([promise1, promise2, promise3]).then(res => {
-            console.log(res);
+            console.log(res, "all");
             //结果为：[1,2,3] 
         }, function (error) { //这个和catch都有的时候执行这个函数
-            console.log(error, "function")
+            console.log(error, "function", "all")
         }).catch((error) => {
-            console.log(error)
+            console.log(error, "all")
         })
-        // promise1.then(function (value) {
-        //     console.log(value);
-        // }, function (error) {
-        //     console.log(error)
-        // }).catch((error) => {
-        //     console.log(error, "第二次失败")
-        // });
+
+        Promise.race([promise1, promise2, promise3]).then(res => {
+            console.log(res, "race");
+        }, rej => {
+            console.log(rej, "race")
+        })
+
+
+        promise1.finally()
+
+
+        function testAsy(x) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject(x);
+                }, 3000)
+            }
+            )
+        }
+        async function testAwt() {
+            let result = await testAsy('hello world');
+            console.log(result);    // 3秒钟之后出现hello world
+            console.log('cuger')   // 3秒钟之后出现cug
+        }
+        testAwt();
+        console.log('cug')  //立即输出cug
+
+
+        let onWatch = (obj, setBind, getLogger) => {
+            let handler = {
+                get(target, property, receiver) {
+                    getLogger(target, property)
+                    return Reflect.get(target, property, receiver)
+                },
+                set(target, property, value, receiver) {
+                    setBind(value, property)
+                    return Reflect.set(target, property, value)
+                }
+            }
+            return new Proxy(obj, handler)
+        }
+        let obj = { a: 1 }
+        let p = onWatch(
+            obj,
+            (v, property) => {
+                console.log(`监听到属性${property}改变为${v}`)
+            },
+            (target, property) => {
+                console.log(`'${property}' = ${target[property]}`)
+            }
+        )
+        p.a = 2 // 监听到属性a改变
+        p.a // 'a' = 2
+
+
+        const watchProxy = (obj) => {
+            return new Proxy(obj, {
+                get(target, property, receiver){
+                    console.log(target, property, receiver, "get-watch");
+                    return Reflect.get(target, property, receiver);
+                },
+                set(target, property, value, receiver) {
+                    console.log(target, property, value, receiver, "set-watch");
+                    return Reflect.set(target, property, value, receiver);
+                }
+            })
+        }
+
+        let p1 = watchProxy(obj);
+        p1.a = "重新测试"
+        console.log(p1, p1.a);
 
 
     </script>

@@ -412,6 +412,8 @@ new操作符的执行过程：
 
 4、判断函数的返回值类型，如果是值类型，返回创建对象；如果是引用类型，返回引用类型的对象。
 
+小提示：箭头函数是无法new的，因为它没有prototype，也没有自己的this指向，更不可能有arguments参数。
+
 ```javascript
 function objectFactory() {
   let newObject = null;
@@ -716,6 +718,9 @@ console.log('script end')
 // 输出顺序: script start->promise1->promise1 end->script end->promise2->settimeout
 
 //async/await
+//async/await其实是 Generator 的语法糖，能实现的效果都能用then链来实现（它是为优化then链而开发出来的）
+//async 返回的是一个Promise对象
+//await 等待的如果不是一个Promise对象，那运算结果就是它等到的东西，如果是promise对象，那等的就是resolve得到的值
 async function async1(){
    console.log('async1 start');
     await async2();
@@ -728,6 +733,12 @@ console.log('script start');
 async1();
 console.log('script end')
 // 输出顺序：script start->async1 start->async2->script end->async1 end
+
+//async/await 相对promise的优势
+/*
+Promise传递中间值⾮常麻烦，⽽async/await⼏乎是同步的写法，⾮常优雅
+错误处理友好，async/await可以⽤成熟的try/catch，Promise的错误捕获⾮常冗余
+*/
 
 ```
 
@@ -773,15 +784,64 @@ Promise.all([promise1,promise2,promise3]).then(res=>{
     console.log(error); //只要有一个失败就在这里返回
 })
 
+//race()：是赛跑的意思，只返最先执行完的那个状态，成功返回resolved，失败返回rejected
+Promise.race([promise1, promise2, promise3]).then(res => {
+    console.log(res, "race");
+}, rej => {
+    console.log(rej, "race")
+})
+
+//finally()：不依赖于 Promise 的执行结果，也就是resolved和rejected都会执行，且只执行1次。
 ```
 
 
+
+### 并发与并行的区别
+
+**并发**是宏观概念，我分别有任务 A 和任务 B，在一段时间内通过任务间的切换完成了这两个任务，这种情况就可以称之为并发。
+
+**并行**是微观概念，假设 CPU 中存在两个核心，那么我就可以同时完成任务 A、B。同时完成多个任务的情况就可以称之为并行。
 
 
 
 ## Proxy
 
+Proxy 是 ES6 中新增的功能，它可以用来自定义对象中的操作。
+
+new Proxy(target, handler)：target为需要代理的对象，handler传的是具体的get、set方法
+
+```js
+const watchProxy = (obj) => {
+    return new Proxy(obj, {
+        get(target, property, receiver){
+            console.log(target, property, receiver, "get-watch");
+            return Reflect.get(target, property, receiver); //返回对象的属性
+        },
+        set(target, property, value, receiver) {
+            console.log(target, property, value, receiver, "set-watch");
+            return Reflect.set(target, property, value, receiver); //设置对象的属性
+        }
+    })
+}
+
+let p1 = watchProxy(obj);
+p1.a = "重新测试"
+console.log(p1, p1.a);
+```
+
+
+
 ## ES6新特性（数组常用方法区别）
+
+
+
+
+
+
+
+
+
+
 
 ## Ajax/网络协议
 
