@@ -1668,7 +1668,9 @@ console.log(p1, p1.a);
 
 ### Ajax
 
+AJAX是 Asynchronous JavaScript and XML 的缩写，指的是通过 JavaScript 的 异步通信，从服务器获取 XML 文档从中提取数据，再更新当前网页的对应部分，而不用刷新整个网页。
 
+创建AJAX请求的步骤：
 
 
 
