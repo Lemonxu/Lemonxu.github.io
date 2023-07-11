@@ -161,22 +161,27 @@ CSS3媒体查询可以让我们针对不同的媒体类型定义不同的样式�
         background: red;
     }
 
-    @media screen and (min-width: 480px) {
+    @media screen and (max-width: 1200px) {
         body {
             background: yellow;
         }
     }
-    @media screen and (min-width: 600px) {
+    @media screen and (max-width: 900px) {
         body {
             background: green;
         }
     }
-    @media screen and (min-width: 900px) {
+    @media screen and (max-width: 780px) {
+        body {
+            background: blue;
+        }
+    }
+    @media screen and (max-width: 600px) {
         body {
             background: purple;
         }
     }
-    @media screen and (min-width: 1200px) {
+    @media screen and (max-width: 480px) {
         body {
             background: palevioletred;
         }
