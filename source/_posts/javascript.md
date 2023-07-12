@@ -1170,6 +1170,143 @@ Array.prototype.isPrototypeOf(obj); //true或者false
 
 ```
 
+#### 数组的遍历方法（10种）
+
+```javascript
+// forEach()：数组方法，不改变原数组，没有返回值
+[1,2,3].forEach(function(currentValue, index, arr){
+    if(currentValue == 2){
+        return
+    }
+    console.log(currentValue, index, arr, this) 
+}, {a: 123}) //{a:123}是改变指向this的值
+//输出如下：
+//1 0 [1, 2, 3] {a: 123}
+//3 2 [1, 2, 3] {a: 123}
+
+//map()：数组方法，不改变原数组，有返回值，可链式调用
+var doubles = [1,2,3].map(function(currentValue, index, arr){
+    console.log(currentValue, index, arr, this)
+    return currentValue * 2
+}, {a: 123});
+console.log(doubles)
+//输出如下：
+//1 0 [1, 2, 3] {a: 123}
+//2 1 [1, 2, 3] {a: 123}
+//3 2 [1, 2, 3] {a: 123}
+//[2, 4, 6]
+
+//filter()：数组方法，过滤数组，返回包含符合条件的元素的数组，可链式调用
+var doubles = [1,2,3].filter(function(currentValue, index, arr){
+    console.log(currentValue, index, arr, this)
+    return currentValue >= 2;
+}, {a: 123});
+console.log(doubles)
+//输出如下：
+//1 0 [1, 2, 3] {a: 123}
+//2 1 [1, 2, 3] {a: 123}
+//3 2 [1, 2, 3] {a: 123}
+//[2, 3]
+
+//for...of：for...of遍历具有Iterator迭代器的对象的属性，返回的是数组的元素、对象的属性值，不能遍历普通的obj对象，将异步循环变成同步循环；遍历的是数组元素值（value）
+let iterable = [30, 20, 10];
+for (let value of iterable) {
+    value += 1;
+    console.log(value);
+}
+//输出如下：
+//31
+//21
+//11
+
+//for...in： 遍历的是数组的索引（index），索引为字符串型数字，不能直接进行集合运算；更适合遍历对象。因此没算在遍历方法中
+var arr = [1,2,3]
+for (let index in arr) {
+  let res = index + 1
+  console.log(res)
+}
+//输出如下：
+//01
+//11
+//21
+
+var arr = {a:1, b:2}
+for (let index in arr) {
+  console.log(index)
+}
+//输出如下：
+//a
+//b
+
+//every()：只要有一个是false，便返回false
+const numberFlag = [1,2,3].every(function(currentValue, index, arr){
+    console.log(currentValue, index, arr, this)
+	return currentValue < 2;
+}, {a: 123})
+console.log(numberFlag)
+//输出如下：
+//1 0 [1, 2, 3] {a: 123}
+//2 1 [1, 2, 3] {a: 123}
+//false
+
+//some()：只要有一个是true，便返回true
+const numberFlag = [1,2,3].some(function(currentValue, index, arr){
+    console.log(currentValue, index, arr, this)
+	return currentValue < 23;
+}, {a: 123})
+console.log(numberFlag)
+//输出如下：
+//1 0 [1, 2, 3] {a: 123}
+//true
+
+//find()：返回的是第一个符合条件的值
+const numberFlag = [1,2,3].find(function(currentValue, index, arr){
+    console.log(currentValue, index, arr, this)
+	return currentValue < 3;
+}, {a: 123})
+console.log(numberFlag)
+//输出如下：
+//1 0 [1, 2, 3] {a: 123}
+//1
+
+//findIndex()：返回的是第一个返回条件的值的索引值
+const numberFlag = [1,2,3].findIndex(function(currentValue, index, arr){
+    console.log(currentValue, index, arr, this)
+	return currentValue < 3;
+}, {a: 123})
+console.log(numberFlag)
+//输出如下：
+//1 0 [1, 2, 3] {a: 123}
+//0
+
+//reduce()：对数组正序操作
+const number = [1,2,3].reduce(function(total, currentValue, currentIndex, arr){
+    console.log(total, currentValue, currentIndex, arr, this)
+	return total + currentValue;
+}, 150)
+console.log(number)
+//输出如下：
+//150 1 0 [1, 2, 3] Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+//151 2 1 [1, 2, 3] Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+//153 3 2 [1, 2, 3] Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+//156
+
+//reduceRight()：reduceRight()对数组逆序操作
+const number = [1,2,3].reduceRight(function(total, currentValue, currentIndex, arr){
+    console.log(total, currentValue, currentIndex, arr, this)
+	return total + currentValue;
+}, 150)
+console.log(number)
+//输出如下：
+//150 3 2 [1, 2, 3] Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+//153 2 1 [1, 2, 3] Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+//155 1 0 [1, 2, 3] Window {window: Window, self: Window, document: document, name: '', location: Location, …}
+//156
+
+```
+
+
+
 ## 基础（操作符new/隐式转换）
 
 ### 隐式转换规则
