@@ -1,4 +1,6 @@
+https://lemonxu.eu.org/2023/09/05/frontend-performance/
 https://lemonxu.eu.org/2023/06/25/javascript/
-https://lemonxu.eu.org/2023/05/31/responsive-html/responsive-html/
+https://lemonxu.eu.org/2023/07/17/web-rendering/
 https://lemonxu.eu.org/2023/06/16/CSS/CSS/
 https://lemonxu.eu.org/2023/05/18/html/html/
+https://lemonxu.eu.org/2023/05/31/responsive-html/responsive-html/
