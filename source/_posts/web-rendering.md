@@ -107,7 +107,7 @@ SSG（Static Site Generation）
 
 # 同构渲染（Isomorphic Rendering）
 
-其实也就是同时支持CSR和SSR，是指在服务器端和客户端都可以执行的渲染方式，也就是*同构渲染（isomorphic rendering）。它允许在服务器端和客户端使用相同的代码来生成和渲染应用程序的UI。在初始加载时，服务器会执行应用程序的渲染逻辑，并将生成的HTML内容发送到客户端。然后，客户端会接管应用程序，并使用相同的代码来重新渲染UI，以便处理后续的交互和更新。这种方式可以提供更好的首次加载性能，因为服务器可以生成完整的HTML内容，而客户端只需要处理后续的交互和更新。
+其实也就是同时支持CSR和SSR，是指在服务器端和客户端都可以执行的渲染方式，也就是*同构渲染（isomorphic rendering）*。它允许在服务器端和客户端使用相同的代码来生成和渲染应用程序的UI。在初始加载时，服务器会执行应用程序的渲染逻辑，并将生成的HTML内容发送到客户端。然后，客户端会接管应用程序，并使用相同的代码来重新渲染UI，以便处理后续的交互和更新。这种方式可以提供更好的首次加载性能，因为服务器可以生成完整的HTML内容，而客户端只需要处理后续的交互和更新。
 
 **服务端** 要渲染 **Vue 组件** 意味着需要处理 `*.vue`、`*.css`、`*.ts` 等依赖模块，而这些是 **node** 本身就不能处理的内容，也不是 `renderToString` 能够处理的，因此需要借助 **打包构建工具（如 webpack）** 进行处理；
 
@@ -155,7 +155,7 @@ Rehydration是指在服务器端生成HTML内容，并将其发送到客户端�
 
 附录：
 
-[页面加载性能之LCP - 知乎 (zhihu.com)
+[页面加载性能之LCP - 知乎 (zhihu.com)]
 
 [Web前端最新优化指标：FP、FCP、LCP、CLS、TTI、FID、TBT、FMP等 - guo&qi - 博客园 (cnblogs.com)](https://www.cnblogs.com/gg-qq/p/16178277.html#:~:text=Web前端最新优化指标：FP、FCP、LCP、CLS、TTI、FID、TBT、FMP等 FP（First Paint）：首次绘制时间，这个指标用于记录页面第一次绘制像素的时间。 FCP（First Contentful,Paint）：首次内容绘制时间，这个指标用于记录页面首次绘制文本、图片、非空白 Canvas 或 SVG 的时间。)
 
